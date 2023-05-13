@@ -1,25 +1,34 @@
 import random
 
+# All Counstants Used
 MAX_LINES = 5
 MIN_BET = 1
 MAX_BET = 1000
-
 ROWS = 5
 COLUMNS = 5
 
+# each symbol and its count in each row
 symbolCount = {
-    "A": 3,
-    "B": 7,
-    "C": 9,
-    "D": 6,
+    "A": 8,
+    "B": 10,
+    "C": 11,
+    "D": 18,
 }
 
+# each symbol and its multiplier on the winnings.
 symbolMultiplier = {
-    "A": 9,
-    "B": 4,
-    "C": 2,
-    "D": 5
+    "A": 6,
+    "B": 5,
+    "C": 4,
+    "D": 3
 }
+
+'''
+pre-conditions: None
+Post-conditions: None
+Prompts the user to deposit an amount into the machine, would not stop until amount is greater than 9
+returns: an integer number referring to the amount deposited.
+'''
 
 
 def getDeposit():
@@ -34,6 +43,14 @@ def getDeposit():
         else:
             print("Please enter a number")
     return amount
+
+
+'''
+pre-condition: None
+Post-conditions: None
+Prompts the user to enter the number of lines they wish to bet on.
+returns: an integer referring to the number of lines the user bet's on
+'''
 
 
 def getNumberOfLines():
@@ -51,6 +68,14 @@ def getNumberOfLines():
     return lines
 
 
+'''
+pre-conditions: None
+post-conditions: None
+Prompts the user to enter the amount they want to bet on each slot
+returns: the integer amount they want to bet on each slot.
+'''
+
+
 def getPlayersBet():
     while True:
         amount = input("How much would you like to bet on each line (min $" +
@@ -64,6 +89,16 @@ def getPlayersBet():
         else:
             print("Please enter a number")
     return amount
+
+
+'''
+pre-conditions:
+    rows: The number of rows in our slot machine, should be unchanged after.
+    cols: The number of columns in our slot machine, should be unchanged after.
+    symbols: A dictionary storing the symbols in our slot machine and their related count.
+post-conditions: 
+returns: a 2 dimensional list that gets the arrangement of the machine after the spin.
+'''
 
 
 def getSlotMachineSpin(rows, cols, symbols):
@@ -85,6 +120,10 @@ def getSlotMachineSpin(rows, cols, symbols):
     return columns
 
 
+'''
+'''
+
+
 def printSlotMachine(columns):
     for row in range(len(columns[0])):
         for i, column in enumerate(columns):
@@ -95,8 +134,13 @@ def printSlotMachine(columns):
         print()
 
 
+'''
+'''
+
+
 def checkWinnings(columns, lines, bet, values):
     winnings = 0
+    winningLines = []
     for line in range(lines):
         symbol = columns[0][line]
         for column in columns:
@@ -105,11 +149,15 @@ def checkWinnings(columns, lines, bet, values):
                 break
         else:
             winnings += values[symbol] * bet
-    return winnings
+            winningLines.append(line + 1)
+    return winnings, winningLines
+
+    """_summary_
+
+    """
 
 
-def main():
-    userBalance = getDeposit()
+def spinTheSlots(userBalance):
     slotLines = getNumberOfLines()
     while True:
         bet = getPlayersBet()
@@ -127,6 +175,26 @@ def main():
     )
     slots = getSlotMachineSpin(ROWS, COLUMNS, symbolCount)
     printSlotMachine(slots)
+    userWinnings, winningLines = checkWinnings(
+        slots, slotLines, bet, symbolMultiplier)
+    print(f"you won ${userWinnings}")
+    print(f"on lines: ", *winningLines)
+    return userWinnings - totalBet
+
+
+"""
+Main Program that runs slot machine.
+"""
+
+
+def main():
+    userBalance = getDeposit()
+    while True:
+        print(f"Current balance is ${userBalance}")
+        spinMachine = input("press any key to spin (q to quit).")
+        if spinMachine == "q":
+            break
+        userBalance += spinTheSlots(userBalance)
 
 
 main()
