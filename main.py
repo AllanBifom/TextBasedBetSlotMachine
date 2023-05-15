@@ -121,6 +121,11 @@ def getSlotMachineSpin(rows, cols, symbols):
 
 
 '''
+pre-conditions:
+    columns: a 2-dimensional list that stores the slot machine data.
+post-condition:
+print's out/displays the slot machine
+returns: none
 '''
 
 
@@ -135,6 +140,13 @@ def printSlotMachine(columns):
 
 
 '''
+pre-conditions:
+    columns:
+    lines:
+    bet:
+    values:
+post-conditions:
+return: 
 '''
 
 
@@ -152,9 +164,9 @@ def checkWinnings(columns, lines, bet, values):
             winningLines.append(line + 1)
     return winnings, winningLines
 
-    """_summary_
 
-    """
+'''
+'''
 
 
 def spinTheSlots(userBalance):
@@ -162,7 +174,6 @@ def spinTheSlots(userBalance):
     while True:
         bet = getPlayersBet()
         totalBet = bet * slotLines
-
         if totalBet > userBalance:
             print(
                 f"You do not have enough money in your balance to bet that amount, your current balance is ${userBalance}"
